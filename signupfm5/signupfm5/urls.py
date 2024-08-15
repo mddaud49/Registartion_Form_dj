@@ -21,4 +21,7 @@ from app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.Signup,name='signup'),
+    path('login/',views.UserLogin,name="login"),
+    path('profile/',views.UserProfile,name="profile"),
+    path('logout/',views.UserLogout,name="logout"),
 ]
