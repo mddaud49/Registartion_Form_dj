@@ -13,13 +13,34 @@
 <body>
     <h1>WELCOME TO PROFILE</h1>
     <h1>{{name}}</h1>
-    <a href="{% url 'logout' %}">logout</a>
+    <form action="" method="POST">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+         {% for error in form.non_field_errors %}
+           {{error}}
+         {% endfor %}
+        {% endif %}
+
+
+        {% for fm in form %}
+         {{fm.label_tag}} {{fm}} {{fm.errors}} <br> <br>
+        {% endfor %}
+        <input type="submit" value="save">
+
+    </form>
+
+    <a href="{% url 'logout' %}">logout</a> 
+      <a href="{% url 'change' %}"> ChangePassword </a>
+      <a href="{% url 'change1' %}"> ChangePassword1 </a>
+      
     {% if messages %}
      {% for message in messages %}
          
        <p {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</p>
      {% endfor %}
     {% endif %}
+   
     
 </body>
 </html>
