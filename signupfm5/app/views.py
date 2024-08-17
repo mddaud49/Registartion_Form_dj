@@ -4,6 +4,7 @@ from .forms import SignForm,EditProfileForm,EditAdminForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm,SetPasswordForm
 from django.contrib.auth import authenticate,login,logout,update_session_auth_hash
+from django.contrib.auth.models import User
 
 # Create your views here.
 def Signup(request):
@@ -40,17 +41,21 @@ def UserProfile(request):
     if request.method=='POST':
        if request.user.is_superuser=='TRUE':
           fm=EditAdminForm(request.POST,instance=request.user)
+          user=User.objects.all()
        else:
         fm=EditProfileForm(request.POST,instance=request.user)
+        user=None
        if fm.is_valid:
           messages.success(request,'Profile updated')
           fm.save()
     else:
      if request.user.is_superuser==True:
         fm=EditAdminForm(instance=request.user)
+        user=User.objects.all()
      else:
       fm=EditProfileForm(instance=request.user)
-    return render(request,'profile.html',{'name':request.user.username,'form':fm})
+      user=None
+    return render(request,'profile.html',{'name':request.user.username,'form':fm,'users':user})
    else:
       return HttpResponseRedirect('/login/')
 
@@ -85,6 +90,14 @@ def Changepass1(request):
    return render(request,'change1.html',{'form':fm})
  else:
     return HttpResponseRedirect('/login/')
+ 
+
+def UserDetail(request,id):
+  if request.user.is_authenticated:
+    pi=User.objects.get(pk=id)
+    fm=EditAdminForm(instance=pi)
+    return render(request,'dashboard.html',{'form':fm})
+    
 
    
     

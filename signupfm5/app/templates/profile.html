@@ -13,6 +13,12 @@
 <body>
     <h1>WELCOME TO PROFILE</h1>
     <h1>{{name}}</h1>
+    {% if users != None %}
+     <h3>LIST OF USERS </h3>
+      {% for user in users %}
+       <h4> <a href="{% url 'userdetail' user.id %}">{{user.username}} </a> </h4> 
+      {% endfor %}
+    {% endif %}
     <form action="" method="POST">
         {% csrf_token %}
 
